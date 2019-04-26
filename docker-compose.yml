@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  ed:
+    image: ed-develop
+    build:
+      context: ../ed2
+    # command: ["ed2.develop", "-s", "-f", "/data/ED2IN"]
+    command: /data/run.sh
+    volumes:
+      - .:/data
