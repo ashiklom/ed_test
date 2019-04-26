@@ -519,7 +519,7 @@ $ED_NL
    NL%LU_DATABASE = '/data/common/ed_inputs/glu/'
    NL%PLANTATION_FILE = ''
    NL%THSUMS_DATABASE = '/data/common/ed_inputs/'
-   NL%ED_MET_DRIVER_DB = '/data/CRUNCEP_ED2_site_1-33/ED_MET_DRIVER_HEADER'
+   NL%ED_MET_DRIVER_DB = '/data/sites/CRUNCEP_ED2_site_1-33/ED_MET_DRIVER_HEADER'
    NL%SOILSTATE_DB = ''
    NL%SOILDEPTH_DB = ''
    !---------------------------------------------------------------------------------------!

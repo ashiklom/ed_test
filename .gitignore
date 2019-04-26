@@ -1,6 +1,12 @@
-/input/
+# ED raw output files
 /output/
-.projectile
 
+# Dynamic inputs
+/input/
+
+# Static inputs
 /common/
-/CRUNCEP_ED2_site_1-33/
+/sites/
+
+# Other files
+.projectile
