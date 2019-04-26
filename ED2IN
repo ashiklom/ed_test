@@ -1279,7 +1279,7 @@ $ED_NL
    !               simulation.                                                             !
    ! PHENPATH   -- path and prefix of the prescribed phenology data.                       !
    !---------------------------------------------------------------------------------------!
-   NL%IEDCNFGF = 'config.xml'
+   NL%IEDCNFGF = '/data/inputs/config.xml'
    NL%EVENT_FILE = 'myevents.xml'
    !---------------------------------------------------------------------------------------!
    !     Census variables.  This is going to create unique census statuses to cohorts, to  !
