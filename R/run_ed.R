@@ -7,8 +7,9 @@ run_ed <- function(ed2in, ...) {
   prun_ed(...)
 }
 
-prun_ed <- function(...) {
+prun_ed <- function(profile = FALSE, ...) {
   wd <- here::here()
   stopifnot(fs::file_exists(fs::path(wd, "docker-compose.yml")))
-  processx::run("docker-compose", "up", ...)
+  cmd <- if (profile) "ed-profile" else "ed"
+  processx::run("docker-compose", c("up", cmd), ...)
 }

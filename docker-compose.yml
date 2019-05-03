@@ -1,11 +1,32 @@
 version: "3.7"
 
 services:
+  ed-depends:
+    image: ed-depends
+    build:
+      context: ../ed2
+      dockerfile: Dockerfile-depends
   ed:
     image: ed-develop
     build:
       context: ../ed2
-    # command: ["ed2.develop", "-s", "-f", "/data/ED2IN"]
+      dockerfile: Dockerfile
+      args:
+        PLATFORM: docker
+        KIND: E
+        SUFFIX: opt
     command: /data/run.sh
+    volumes:
+      - .:/data
+  ed-profile:
+    image: ed-develop-prof
+    build:
+      context: ../ed2
+      dockerfile: Dockerfile
+      args:
+        PLATFORM: docker-prof
+        KIND: A
+        SUFFIX: dbg
+    command: /data/profile.sh
     volumes:
       - .:/data
