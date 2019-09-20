@@ -30,20 +30,44 @@ obs_times <- c(
 obs_file <- path("input", "obstime.time")
 write_tsv(obs_times, obs_file)
 
+soil_data <- read.csv(file.path(
+  "~", "Projects", "forte_project", "fortebaseline",
+  "analysis",
+  "data",
+  "derived-data",
+  "soil-moisture.csv"
+), header = TRUE, stringsAsFactors = FALSE) %>%
+  # Make depth negative
+  dplyr::mutate(depth = -depth) %>%
+  # Start with deepest layer
+  dplyr::arrange(depth)
+
 ed2in <- ed2in_in %>%
-  modify_ed2in(start_date = "1902-06-01",
-               end_date = "1902-08-30",
-               IOOUTPUT = 3,
-               ITOUTPUT = 0,
-               IMOUTPUT = 3,
-               OBSTIME_DB = file.path("/data", obs_file),
-               OUTFAST = 0,
-               DTLSM = 900,
-               RADFRQ = 900,
-               FRQFAST = 10800,
-               INTEGRATION_SCHEME = 3,
-               IADD_COHORT_MEANS = 1,
-               add_if_missing = TRUE)
+  modify_ed2in(
+    start_date = "1902-06-01",
+    end_date = "1902-08-30",
+    IOOUTPUT = 0,
+    ITOUTPUT = 0,
+    IMOUTPUT = 3,
+    OBSTIME_DB = file.path("/data", obs_file),
+    OUTFAST = 0,
+    DTLSM = 900,
+    RADFRQ = 900,
+    FRQFAST = 10800,
+    INTEGRATION_SCHEME = 1,
+    IADD_COHORT_MEANS = 1,
+    SLZ = soil_data[["depth"]],
+    SLMSTR = soil_data[["slmstr"]],
+    add_if_missing = TRUE,
+    NSLCON = 1, # Sand
+    SLXCLAY = 0.01,
+    SLXSAND = 0.92,
+    # Soil moisture data from Ameriflux
+    # See analysis/scripts/soil-moisture.R
+    NZG = nrow(soil_data),
+    SLZ = soil_data[["depth"]],
+    SLMSTR = soil_data[["slmstr"]]
+  )
 system.time(
   p <- run_ed(ed2in, echo = TRUE)
 )
@@ -81,3 +105,13 @@ h <- ncdf4::ncvar_get(nc, "HITE")
 ## filename <- files[[1]]
 
 ## nc <- ncdf4::nc_open(filename)
+
+f <- "output/analysis-I-1902-06-01-120000-g01.h5"
+nc <- ncdf4::nc_open(f)
+
+ncmeta::nc_dims(f)
+
+library(tidync)
+out <- tidync(f) %>%
+  activate("D6,D2") %>%
+  hyper_tibble()

@@ -1,3 +1,3 @@
 #!/bin/bash
 ulimit -s unlimited
-ed2.develop -s -f /data/input/ED2IN
+OMP_NUM_THREADS=1 ed2.develop -s -f /data/input/ED2IN
